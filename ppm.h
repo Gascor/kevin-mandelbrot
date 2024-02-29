@@ -1,7 +1,7 @@
 #ifndef PPM_H
 #define PPM_H
  
- 
+
 struct ppm_pixel
 {
     unsigned char r;

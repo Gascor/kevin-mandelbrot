@@ -1,17 +1,20 @@
-CFLAGS=-O3 -g
+CC=gcc
+CFLAGS=-std=c11 -O3 -g -Wall -Wextra -Wpedantic
+LDFLAGS=-L. -Wl,-rpath,'$$ORIGIN'
+LDLIBS=-lppm -lm
 
-TARGET=test mandel
+TARGETS=test mandel
 
-all: $(TARGET)
+all: $(TARGETS)
 
-libppm.so: ppm.c
-	$(CC) $(CFLAGS) -fPIC -shared $< -o $@
+libppm.so: ppm.c ppm.h
+	$(CC) $(CFLAGS) -fPIC -shared ppm.c -o libppm.so
 
-test: main.c libppm.so
-	$(CC) $(CFLAGS) $(LDFLAGS) -lppm -L. $< -o $@
+test: main.c libppm.so ppm.h
+	$(CC) $(CFLAGS) main.c $(LDFLAGS) $(LDLIBS) -o test
 
-mandel: mandel.c libppm.so
-	$(CC) $(CFLAGS) $(LDFLAGS) -lppm -L. $< -o $@
+mandel: mandel.c libppm.so ppm.h
+	$(CC) $(CFLAGS) mandel.c $(LDFLAGS) $(LDLIBS) -o mandel
 
 clean:
-	rm -fr $(TARGET) *.so
+	rm -f $(TARGETS) *.so *.o *.ppm

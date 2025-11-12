@@ -1,0 +1,5 @@
+*.ppm
+*.so
+test
+mandel
+*.o
